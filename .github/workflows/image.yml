@@ -1,0 +1,79 @@
+name: Build and push image
+
+# Every path is part of the app, so there is no paths filter: the job runs on every
+# pull request and can be a required check. PRs build without pushing.
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Newest build wins; an older run still in flight would publish a stale `main`.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/boykush/backstage-app
+
+jobs:
+  image:
+    name: Build image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write # push to GHCR
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up mise
+        uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8 # v5.1.2
+
+      # yarn itself is vendored (.yarnrc.yml yarnPath); corepack only puts `yarn` on PATH.
+      - name: Install dependencies
+        run: |
+          corepack enable
+          yarn install --immutable
+
+      - name: Type check
+        run: yarn tsc
+
+      # The Dockerfile copies the bundle this produces rather than building inside.
+      - name: Build backend
+        run: yarn build:backend
+
+      - name: Build
+        run: |
+          docker build \
+            --platform linux/amd64 \
+            --file packages/backend/Dockerfile \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --tag "${IMAGE}:${GITHUB_SHA:0:7}" \
+            --tag "${IMAGE}:main" \
+            .
+
+      - name: Log in to GHCR
+        if: github.ref == 'refs/heads/main'
+        env:
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+
+      # `main` is the mutable pointer a deployment can follow by digest; the commit
+      # tag identifies a build after the fact.
+      - name: Push
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push "${IMAGE}:${GITHUB_SHA:0:7}"
+          docker push "${IMAGE}:main"
