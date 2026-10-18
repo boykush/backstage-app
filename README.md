@@ -7,6 +7,7 @@ boykush の catalog を出す Backstage の app。`@backstage/create-app` が作
 公式 image（`ghcr.io/backstage/backstage`）は create-app の出力そのままで、plugin を足せない。この repo が雛形から変えているのは次だけで、それ以外は create-app のまま保つ。
 
 - `packages/backend/src/index.ts` に `@backstage/plugin-catalog-backend-module-ai-model` を足し、AiResource kind を使えるようにしている。
+- `packages/backend/src/index.ts` に `@backstage/plugin-catalog-backend-module-github` を足し、各 repo の `catalog-info.yaml` を GitHub Discovery で取り込めるようにしている。
 - `package.json` の `resolutions` で `@yarnpkg/core` を `4.9.1` に固定している。無いと `yarn install` が `got-npm-11.8.2-*.patch` の ENOENT で落ちる（[backstage/backstage#35964](https://github.com/backstage/backstage/issues/35964)）。upstream が直したら外す。
 - 雛形の `catalog-info.yaml` は置かない。
 

@@ -36,6 +36,8 @@ backend.add(
 );
 // The reason this app is built at all: create-app leaves out the AiResource kind.
 backend.add(import('@backstage/plugin-catalog-backend-module-ai-model'));
+// Finds each repository's catalog-info.yaml, read as the repo-reader GitHub App.
+backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
