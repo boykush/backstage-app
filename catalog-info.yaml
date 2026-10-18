@@ -24,6 +24,7 @@ spec:
     - catalog-mcp
   dependsOn:
     - component:github-management
+    - component:workflows
     - resource:doks-cluster
     - resource:cloudflare-tunnel
     - resource:ghcr
