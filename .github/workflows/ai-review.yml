@@ -1,0 +1,18 @@
+# owner の PR を boykush/adr のルールと照合し、違反が無ければ Claude GitHub App として承認する。
+# default branch の ruleset が求める承認は、これで付く。reusable workflow は boykush/workflows
+# にあり、入れるときに要るものはその README に書いてある。
+name: ai-review
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions: {}
+
+jobs:
+  ai-review:
+    uses: boykush/workflows/.github/workflows/ai-review.yml@f332e0211cce2ccfdc285791d1011b9c542cb609
+    permissions:
+      contents: read
+      pull-requests: read
+      id-token: write

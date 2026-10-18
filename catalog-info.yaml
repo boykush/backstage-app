@@ -1,0 +1,51 @@
+# This repository's entities in boykush's Backstage catalog, found on main by its
+# GitHub discovery (boykush/infrastructure-as-code's applications/backstage/).
+# How an entity is written — which edges to draw, what a tag means — is set in
+# boykush/github-management's AGENTS.md and the comments atop its catalog/ files.
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backstage-app
+  description: >-
+    この catalog を画面と catalog-mcp で出す Backstage の app。create-app の雛形に AiResource kind を足して
+    build し、image を infrastructure-as-code がデプロイする。出す entity は github-management の catalog/ と各 repo の catalog-info.yaml が持つ
+  annotations:
+    backstage.io/kubernetes-label-selector: app.kubernetes.io/part-of=backstage
+  links:
+    - url: https://backstage.boykush.com
+      title: Backstage
+      icon: dashboard
+spec:
+  type: repository
+  lifecycle: production
+  owner: user:boykush
+  system: repo-governance
+  providesApis:
+    - catalog-mcp
+  dependsOn:
+    - component:github-management
+    - component:workflows
+    - resource:doks-cluster
+    - resource:cloudflare-tunnel
+    - resource:ghcr
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: catalog-mcp
+  description: >-
+    この catalog 自身を読む remote MCP サーバー。読み取り専用で、出ているのは entity を読む action だけ。
+    Backstage が出している。jaeger-mcp と同じく Cloudflare Access の内側にある——入口は Access の OAuth で、
+    通るのは owner だけ。公開エンドポイントは infrastructure-as-code が持つ
+  links:
+    - url: https://github.com/boykush/ai-plugins/blob/main/plugins/catalog-remote-mcp/apm.yml
+      title: 接続先の持ち主（ai-plugins）
+      icon: github
+spec:
+  type: mcp-server
+  lifecycle: production
+  owner: user:boykush
+  system: repo-governance
+  remotes:
+    - type: streamable-http
+      url: https://catalog-mcp.boykush.com/mcp
