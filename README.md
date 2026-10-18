@@ -14,12 +14,11 @@ boykush の catalog を出す Backstage の app。`@backstage/create-app` が作
 
 ```sh
 mise install
-corepack enable
 yarn install
 yarn start
 ```
 
-yarn 本体は `.yarn/releases/` に同梱されている（`.yarnrc.yml` の `yarnPath`）。corepack は `yarn` を PATH に置くためだけに使う。
+yarn 本体は `.yarn/releases/` に同梱されている（`.yarnrc.yml` の `yarnPath`）。`yarn` を PATH に置くのは、`mise.toml` が有効にする corepack。
 
 ## 更新
 

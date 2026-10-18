@@ -39,11 +39,8 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8 # v5.1.2
 
-      # yarn itself is vendored (.yarnrc.yml yarnPath); corepack only puts `yarn` on PATH.
       - name: Install dependencies
-        run: |
-          corepack enable
-          yarn install --immutable
+        run: yarn install --immutable
 
       - name: Type check
         run: yarn tsc
