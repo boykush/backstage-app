@@ -1,0 +1,7 @@
+[tools]
+node = "24.21.0"
+
+# corepack puts `yarn` on PATH and reads its version from packageManager, so the
+# version is not written a third time here.
+[settings]
+node.corepack = true
