@@ -9,6 +9,7 @@ boykush の catalog を出す Backstage の app。`@backstage/create-app` が作
 - `packages/backend/src/index.ts` に `@backstage/plugin-catalog-backend-module-ai-model` を足し、AiResource kind を使えるようにしている。
 - `packages/backend/src/index.ts` に `@backstage/plugin-catalog-backend-module-github` を足し、各 repo の `catalog-info.yaml` を GitHub Discovery で取り込めるようにしている。
 - `package.json` の `resolutions` で `@yarnpkg/core` を `4.9.1` に固定している。無いと `yarn install` が `got-npm-11.8.2-*.patch` の ENOENT で落ちる（[backstage/backstage#35964](https://github.com/backstage/backstage/issues/35964)）。upstream が直したら外す。
+- `packages/backend/Dockerfile` に Python と MkDocs（`techdocs-requirements.txt`）を足している。TechDocs を backend の中で build するため（cluster の Pod には Docker が無い）。
 - 雛形の `catalog-info.yaml`（create-app が作る仮のもの）は置かない。root の `catalog-info.yaml` は、この repo を boykush の catalog に載せる本物で、github-management から移したもの。
 
 ## 開発

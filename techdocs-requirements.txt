@@ -1,0 +1,3 @@
+# What TechDocs builds each repository's docs/ with, inside the backend
+# (techdocs.generator.runIn: local). A file of its own so Renovate follows it.
+mkdocs-techdocs-core==1.7.1
