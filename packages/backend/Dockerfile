@@ -22,8 +22,18 @@ FROM node:24-trixie-slim
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev && \
+    apt-get install -y --no-install-recommends libsqlite3-dev python3 python3-venv && \
     rm -rf /var/lib/apt/lists/*
+
+# MkDocs for TechDocs, which builds docs inside this process rather than in a
+# container: the cluster gives the pod no Docker. A venv because Debian refuses
+# a system-wide pip install.
+ENV VIRTUAL_ENV=/opt/techdocs
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+COPY techdocs-requirements.txt /tmp/
+RUN python3 -m venv "$VIRTUAL_ENV" && \
+    pip install --no-cache-dir -r /tmp/techdocs-requirements.txt && \
+    rm /tmp/techdocs-requirements.txt
 
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
