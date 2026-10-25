@@ -1,5 +1,7 @@
 [tools]
 node = "24.21.0"
+# Scans the image in CI (.github/workflows/image.yml) before it is pushed.
+trivy = "0.75.0"
 
 # corepack puts `yarn` on PATH and reads its version from packageManager, so the
 # version is not written a third time here.
