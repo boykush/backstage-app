@@ -35,6 +35,11 @@ RUN python3 -m venv "$VIRTUAL_ENV" && \
     pip install --no-cache-dir -r /tmp/techdocs-requirements.txt && \
     rm /tmp/techdocs-requirements.txt
 
+# Nothing below runs npm: installs go through yarn, and native modules build with the
+# node-gyp in the app's own dependencies. The npm the base image ships would only carry
+# its bundled dependencies, and their vulnerabilities, into the running image.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
+
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
 
