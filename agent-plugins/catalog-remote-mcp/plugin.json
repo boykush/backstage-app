@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "name": "boykush"
+  },
+  "description": "Remote MCP server for the catalog of boykush's repositories and the relations that cross them, and the skill that goes with it - how to report which other repositories a pull request reaches. Ask which repositories a change reaches without restating the server in each one.",
+  "name": "catalog-remote-mcp",
+  "version": "0.1.0"
+}
