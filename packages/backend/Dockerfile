@@ -19,9 +19,12 @@ FROM node:24-trixie-slim
 
 # Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
 # in which case you should also move better-sqlite3 to "devDependencies" in package.json.
+# The upgrade takes Debian's security fixes the base image hasn't been rebuilt with yet:
+# the image scan fails on any HIGH that has a fix.
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
+    apt-get upgrade -y --no-install-recommends && \
     apt-get install -y --no-install-recommends libsqlite3-dev python3 python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
