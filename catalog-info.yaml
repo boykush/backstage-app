@@ -38,8 +38,8 @@ metadata:
     Backstage が出している。jaeger-mcp と同じく Cloudflare Access の内側にある——入口は Access の OAuth で、
     通るのは owner だけ。公開エンドポイントは infrastructure-as-code が持つ
   links:
-    - url: https://github.com/boykush/ai-plugins/blob/main/plugins/catalog-remote-mcp/apm.yml
-      title: 接続先の持ち主（ai-plugins）
+    - url: https://github.com/boykush/backstage-app/blob/main/agent-plugins/catalog-remote-mcp/mcp.json
+      title: 接続先の持ち主（plugin catalog-remote-mcp）
       icon: github
 spec:
   type: mcp-server
@@ -49,3 +49,20 @@ spec:
   remotes:
     - type: streamable-http
       url: https://catalog-mcp.boykush.com/mcp
+---
+apiVersion: backstage.io/v1alpha1
+kind: AiResource
+metadata:
+  name: catalog-remote-mcp
+  description: >-
+    catalog-mcp への参照を1つ持つだけの plugin（Agent Plugins の形）。apm の package にして配るのは ai-plugins
+  links:
+    - url: https://backstage.boykush.com/catalog/default/api/catalog-mcp
+      title: MCP サーバー（catalog-mcp）
+      icon: kind:api
+spec:
+  type: plugin
+  lifecycle: production
+  owner: user:boykush
+  system: repo-governance
+  skills: []
