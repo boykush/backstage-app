@@ -8,7 +8,7 @@ metadata:
   name: backstage-app
   description: >-
     この catalog を画面と catalog-mcp で出す Backstage の app。create-app の雛形に AiResource kind を足して
-    build し、image を infrastructure-as-code がデプロイする。出す entity は github-management の catalog/ と各 repo の catalog-info.yaml が持つ
+    build し、image を infrastructure-as-code がデプロイする。catalog-mcp を引く AI 向けの plugin も持つ。出す entity は github-management の catalog/ と各 repo の catalog-info.yaml が持つ
   annotations:
     backstage.io/kubernetes-label-selector: app.kubernetes.io/part-of=backstage
   links:
@@ -38,8 +38,8 @@ metadata:
     Backstage が出している。jaeger-mcp と同じく Cloudflare Access の内側にある——入口は Access の OAuth で、
     通るのは owner だけ。公開エンドポイントは infrastructure-as-code が持つ
   links:
-    - url: https://github.com/boykush/ai-plugins/blob/main/plugins/catalog-remote-mcp/apm.yml
-      title: 接続先の持ち主（ai-plugins）
+    - url: https://github.com/boykush/backstage-app/blob/main/agent-plugins/catalog-remote-mcp/mcp.json
+      title: 接続先の持ち主（catalog-remote-mcp の mcp.json）
       icon: github
 spec:
   type: mcp-server
@@ -49,3 +49,35 @@ spec:
   remotes:
     - type: streamable-http
       url: https://catalog-mcp.boykush.com/mcp
+---
+apiVersion: backstage.io/v1alpha1
+kind: AiResource
+metadata:
+  name: catalog-remote-mcp
+  description: >-
+    catalog-mcp への参照と、PR の変更が及ぶほかの repo を報告する skill を束ねた plugin（Agent Plugins の形）。apm の
+    package にして配るのは ai-plugins
+  links:
+    - url: https://backstage.boykush.com/catalog/default/api/catalog-mcp
+      title: MCP サーバー（catalog-mcp）
+      icon: kind:api
+spec:
+  type: plugin
+  lifecycle: experimental
+  owner: user:boykush
+  system: repo-governance
+  skills:
+    - airesource:catalog-review
+---
+apiVersion: backstage.io/v1alpha1
+kind: AiResource
+metadata:
+  name: catalog-review
+  description: PR の変更が catalog の上でほかの repo に及ぶかを確かめ、対になる PR と catalog とのずれを報告する手順
+  annotations:
+    backstage.io/source-location: url:https://github.com/boykush/backstage-app/tree/main/agent-plugins/catalog-remote-mcp/skills/catalog-review/
+spec:
+  type: skill
+  lifecycle: experimental
+  owner: user:boykush
+  system: repo-governance
