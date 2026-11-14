@@ -2,7 +2,7 @@
 
 boykush の catalog——repo をまたいで作用する関係——を引くための remote MCP サーバーへの参照を1つ持つだけの plugin。[Agent Plugins](https://agent-plugins.org/specification) の形で書く。名前の `remote` は他の plugin に合わせたもので、手元で Backstage を立てる経路は用意していない。
 
-サーバー名は `catalog`。tool は `mcp__catalog__*` として見える（`catalog.query-catalog-entities` / `catalog.get-catalog-entity` / `catalog.get-catalog-model-description` / `catalog.validate-entity`。名前に plugin の `catalog.` が付く）。読み取りだけで、entity を登録・削除する action は配信側で出していない。
+サーバー名は `catalog`。tool は `mcp__catalog__*` として見え、名前に出所の plugin（`catalog.` / `search.` / `techdocs.`）が付く。一覧はサーバーの `tools/list` が正。読み取りだけで、entity を登録・削除する action は配信側で出していない。
 
 ## 配る中身
 

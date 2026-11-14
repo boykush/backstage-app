@@ -34,9 +34,10 @@ kind: API
 metadata:
   name: catalog-mcp
   description: >-
-    この catalog 自身を読む remote MCP サーバー。読み取り専用で、出ているのは entity を読む action だけ。
-    Backstage が出している。jaeger-mcp と同じく Cloudflare Access の内側にある——入口は Access の OAuth で、
-    通るのは owner だけ。公開エンドポイントは infrastructure-as-code が持つ
+    この catalog 自身を読む remote MCP サーバー。読み取り専用で、出ているのは entity を読む action と、entity と
+    TechDocs を語で引く検索。Backstage が出している。入口は Cloudflare Access の OAuth で通るのは owner だけだが、
+    ログインなしで引ける経路も残っている（infrastructure-as-code の terraform/access.tf）ので、public repo から
+    作られるもの以外は出さない。公開エンドポイントは infrastructure-as-code が持つ
   links:
     - url: https://github.com/boykush/backstage-app/blob/main/agent-plugins/catalog-remote-mcp/mcp.json
       title: 接続先の持ち主（plugin catalog-remote-mcp）
