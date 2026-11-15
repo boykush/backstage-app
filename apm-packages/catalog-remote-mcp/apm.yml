@@ -1,12 +1,10 @@
-# Written from plugin.json and mcp.json by boykush/workflows' agent-plugins.yml; edit those.
-name: "catalog-remote-mcp"
-version: "0.1.0"
+name: catalog-remote-mcp
+version: 0.1.0
 description: "Remote MCP server for the catalog of boykush's repositories and the relations that cross them. Ask which repositories a change reaches without restating the server in each one."
-author: "boykush"
+author: boykush
 dependencies:
-  apm: []
   mcp:
-    - name: "catalog"
+    - name: catalog
       registry: false
       transport: http
-      url: "https://catalog-mcp.boykush.com/mcp"
+      url: https://catalog-mcp.boykush.com/mcp

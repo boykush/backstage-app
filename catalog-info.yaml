@@ -39,7 +39,7 @@ metadata:
     ログインなしで引ける経路も残っている（infrastructure-as-code の terraform/access.tf）ので、public repo から
     作られるもの以外は出さない。公開エンドポイントは infrastructure-as-code が持つ
   links:
-    - url: https://github.com/boykush/backstage-app/blob/main/agent-plugins/catalog-remote-mcp/mcp.json
+    - url: https://github.com/boykush/backstage-app/blob/main/apm-packages/catalog-remote-mcp/apm.yml
       title: 接続先の持ち主（plugin catalog-remote-mcp）
       icon: github
 spec:
@@ -56,7 +56,7 @@ kind: AiResource
 metadata:
   name: catalog-remote-mcp
   description: >-
-    catalog-mcp への参照を1つ持つだけの plugin（Agent Plugins の形）。apm の package にして配るのは ai-plugins
+    catalog-mcp への参照を1つ持つだけの plugin（apm の package）
   links:
     - url: https://backstage.boykush.com/catalog/default/api/catalog-mcp
       title: MCP サーバー（catalog-mcp）
