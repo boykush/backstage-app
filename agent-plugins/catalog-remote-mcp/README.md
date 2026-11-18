@@ -20,13 +20,15 @@ repo の中だけを見て「この変更はここで閉じている」と判断
 
 ## 使う
 
-apm で受け取るなら、[ai-plugins](https://github.com/boykush/ai-plugins) がこの plugin から作る package に依存する。apm は Agent Plugins の形を Claude と Codex へは展開しないので、その変換を ai-plugins が持つ。
+apm で、この repo のこの plugin に tag の SHA で依存する。consumer の Renovate はこの tag を追う。
 
 ```yaml
 dependencies:
   apm:
-    - boykush/ai-plugins/plugins/catalog-remote-mcp
+    - boykush/backstage-app/agent-plugins/catalog-remote-mcp#<SHA> # catalog-remote-mcp--v<version>
 ```
+
+隣の `apm.yml` は、apm がこの plugin を Claude と Codex へ展開するための中継ぎで、[boykush/workflows](https://github.com/boykush/workflows) の agent-plugins が `plugin.json` と `mcp.json` から書く。手では直さない。版は `plugin.json` の `version` が持ち、main に入ると同じ workflow が `catalog-remote-mcp--v<version>` の tag を打つ。
 
 ```bash
 apm install

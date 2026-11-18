@@ -56,7 +56,7 @@ kind: AiResource
 metadata:
   name: catalog-remote-mcp
   description: >-
-    catalog-mcp への参照を1つ持つだけの plugin（Agent Plugins の形）。apm の package にして配るのは ai-plugins
+    catalog-mcp への参照を1つ持つだけの plugin（Agent Plugins の形）。apm が読む `apm.yml` を隣に生成して持つ
   links:
     - url: https://backstage.boykush.com/catalog/default/api/catalog-mcp
       title: MCP サーバー（catalog-mcp）
