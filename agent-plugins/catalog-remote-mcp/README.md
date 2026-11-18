@@ -20,23 +20,10 @@ repo の中だけを見て「この変更はここで閉じている」と判断
 
 ## 使う
 
-apm で、この repo のこの plugin に tag の SHA で依存する。consumer の Renovate はこの tag を追う。
+Agent Plugin として、この repo のこのディレクトリを `catalog-remote-mcp--v<version>` の tag で引く。版は `plugin.json` の `version` が持ち、main に入ると [boykush/workflows](https://github.com/boykush/workflows) の agent-plugins が tag を打つ。
 
-```yaml
-dependencies:
-  apm:
-    - boykush/backstage-app/agent-plugins/catalog-remote-mcp#<SHA> # catalog-remote-mcp--v<version>
-```
-
-隣の `apm.yml` は、apm がこの plugin を Claude と Codex へ展開するための中継ぎで、[boykush/workflows](https://github.com/boykush/workflows) の agent-plugins が `plugin.json` と `mcp.json` から書く。手では直さない。版は `plugin.json` の `version` が持ち、main に入ると同じ workflow が `catalog-remote-mcp--v<version>` の tag を打つ。
-
-```bash
-apm install
-```
-
-Claude は `.mcp.json`、Codex は `.codex/config.toml` に入る。どちらも project scope なので、リポジトリに commit すればそのリポジトリで開いた全セッションに効く。
+隣の `apm.yml` は、apm がこの plugin を Claude と Codex へ展開するための中継ぎで、同じ workflow が `plugin.json` と `mcp.json` から書く。手では直さない。
 
 ## 引っかかり所
 
 - クラスタは毎晩 01:37〜06:37 JST に落ちる。その間は Cloudflare が 530 を返す。catalog を見たいだけなら Backstage の UI（`https://backstage.boykush.com`、Cloudflare Access のワンタイム PIN）か、各 repo の `catalog-info.yaml` を直接読む
-- `~/.claude/settings.json` の `enabledMcpjsonServers` に `catalog` は入っていないので、**Claude では初回に承認プロンプトが出る**。出したくなければ [dotfiles](https://github.com/boykush/dotfiles) 側に足す
