@@ -59,6 +59,11 @@
     "basic-ftp@npm:^5.0.2": "^6.2.1",
     "mockttp@npm:^3.13.0": "^4.6.5"
   },
+  "dependenciesMeta": {
+    "better-sqlite3": {
+      "built": true
+    }
+  },
   "prettier": "@backstage/cli/config/prettier",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs}": [
