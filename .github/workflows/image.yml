@@ -62,6 +62,11 @@ jobs:
             --tag "${IMAGE}:main" \
             .
 
+      # Yarn runs a build script only for packages package.json names, and without
+      # its native binding better-sqlite3 lets the app start and never become ready.
+      - name: Open the database
+        run: docker run --rm "${IMAGE}:main" node -e "require('better-sqlite3')(':memory:')"
+
       # Scanned before the push, so a build carrying a fixable HIGH or CRITICAL never
       # reaches GHCR. --ignore-unfixed leaves out what no upgrade can fix yet.
       - name: Scan image
